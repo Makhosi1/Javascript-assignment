@@ -2,17 +2,21 @@ const questions = [
     {
         question: "Which country is not in Africa",
         possAnswers: ["Zimbabwe", "Ghana", "Honduras", "Zambia"],
-        answer: "Honduras"
+        answer: "Honduras",
+        name: "africaq"
     },
     {
         question: "Which food is not a fruit",
         possAnswers: ['Banana', 'Apple', 'Orange', 'Spinach'],
         answer: "Spinach",
+        name: "foodq"
+
     },
     {
         question: "Who is Beyonce?",
         possAnswers: ['Prime Minister', 'Artist', 'IG Influencer', 'Pastor'],
         answer: "Artist",
+        name:"beyonceq"
     }
 ];
 
@@ -20,6 +24,9 @@ const quizContainer = document.querySelector(".quiz-container");
 const quiz = document.querySelector("#quiz");
 const submitbtn = document.querySelector("#submit");
 const results = document.querySelector("#results");
+
+let score = 0;
+let incorrectAnswer =[];
 
 function buildQuiz() {
 
@@ -40,7 +47,7 @@ function buildQuiz() {
 
                 const input = document.createElement("input");
                 input.type = "radio";
-                input.name = `quiz ${option}`;
+                input.name = `quiz-${questions[quest].name}`;
                 input.value = questions[quest].possAnswers[posAns];
 
                 option.appendChild(input);
@@ -50,12 +57,27 @@ function buildQuiz() {
     }
 
     function showresults() {
-        const selectedAnswer = document.querySelector('input[name="quiz"]:checked');
-        if (selectedAnswer) {
-            const answer = selectedAnswer.value;
-            if (answer === questions[possAnswers].answer) {
-            }
-        }
+        incorrectAnswer = [];
+        questions.forEach(question => {
+            let answer = ""
+            const selectedAnswer = document.querySelector(`input[name="quiz-${question.name}"]:checked`);
+            if (selectedAnswer) { 
+                answer = selectedAnswer.value;
+                if (answer === question.answer) {
+                    score ++;
+                    return;
+                }    
+            } 
+
+            incorrectAnswer.push({
+                question: question.question,
+                incorrectAnswer : answer, 
+                correctAnswer: question.answer,
+            });
+        });
+        // remove console log stuff 
+       console.log(incorrectAnswer);
+    
     }
 
 
@@ -68,3 +90,6 @@ function buildQuiz() {
 };
 
 buildQuiz();
+
+
+
