@@ -30,7 +30,6 @@ const results = document.querySelector("#results");
 const header = document.querySelector("#header");
 header.innerHTML= "Simple Quiz";
 
-let score = 0;
 let incorrectAnswer = [];
 let question = 0;
 
@@ -38,30 +37,24 @@ function buildQuiz() {
    
 
     function showquestions() {
-        /*const questionInfo = questions[question];
-        const questionElement = document.createElement('div');
-        questionElement.className = 'questionDiv';
-        questionElement.innerHTML = questionInfo.question;
-    
-        const optionsElement = document.createElement('div');
-        optionsElement.className = 'options';*/
-
+       
+       
         for (let quest = 0; quest < questions.length; quest++) {
-
+            const questionElement = document.createElement('div');
+            questionElement.className = 'questionDiv';
             const quizQuestion = document.createElement('h2');
             quizQuestion.textContent = questions[quest].question;
-            console.log(quizQuestion);
-           
-            quiz.appendChild(quizQuestion);
-           
-           
-
-
-
+            questionElement.appendChild(quizQuestion);
+            quiz.appendChild(questionElement);
+            
+            const optionsElement = document.createElement('div');
+            optionsElement.className = 'options';
+    
+      
             for (let posAns = 0; posAns < questions[quest].possAnswers.length; posAns++) {
                 const option = document.createElement("label");
                 option.textContent = questions[quest].possAnswers[posAns];
-                option.className = 'quizOptions';
+               
 
                 const input = document.createElement("input");
                 input.type = "radio";
@@ -69,18 +62,24 @@ function buildQuiz() {
                 input.value = questions[quest].possAnswers[posAns];
 
                 option.appendChild(input);
-                quiz.appendChild(option);
+                optionsElement.appendChild(option)
+                
 
             }
            
+           quiz.appendChild(optionsElement);
         }
     }
 
     function showresults() {
+
+let score = 0;
         incorrectAnswer = [];
         questions.forEach(question => {
             let answer = ""
             const selectedAnswer = document.querySelector(`input[name="quiz-${question.name}"]:checked`);
+            console.log(selectedAnswer);
+            console.log(question.answer);
             if (selectedAnswer) {
                 answer = selectedAnswer.value;
                 if (answer === question.answer) {
@@ -94,9 +93,11 @@ function buildQuiz() {
                 incorrectAnswer: answer,
                 correctAnswer: question.answer,
             });
+            
         });
-        // remove console log stuff 
-        console.log(incorrectAnswer);
+
+        results.innerHTML = `You scored ${score} out of ${questions.length}!`;
+       
 
     }
 
@@ -105,11 +106,14 @@ function buildQuiz() {
 
     submitbtn.onclick = function displayResults (){
         showresults();
-        results.innerHTML = `You scored ${score} out of ${questions.length}!`;
+        
     }
-    submitbtn.addEventListener('click', function(){
+   /* submitbtn.addEventListener('click', function(){
         document.h2.style.backgroundColor = 'green';
-    })
+
+    submitbtn.reset();
+        
+    })*/
 
 };
 
